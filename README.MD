@@ -9,5 +9,6 @@ Dotfile for my Omarchy Linux setup.
 - cava
 - fish
 - waylyrics
-
-
+- toilet
+- lolcat
+- mpvpaper
