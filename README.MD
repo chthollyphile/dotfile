@@ -4,7 +4,7 @@
 
 Dotfile for my Omarchy Linux setup.
 
-## External (non-omarchy) dependencies
+## External dependencies
 
 - cava
 - fish
