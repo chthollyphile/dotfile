@@ -25,3 +25,7 @@ To set up the awww daemon, please refer to the instructions in the [awww reposit
 After setup, copy `extra/omarchy-theme-bg-next-aw` to `/home/your-username/.local/share/omarchy/bin` for it to work.
 
 > **Note:** Replace `your-username` with your actual username in the path above to avoid errors.
+
+## about `envs.conf`
+
+The [envs.conf](/.config/hypr/envs.conf) file includes fixes for some GPU-related issues. These fixes are tailored specifically for my current machine (i7-12800H + 3070 Ti laptop). However, you can reference them to help adjust your own setup.
