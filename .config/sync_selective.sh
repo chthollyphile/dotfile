@@ -29,7 +29,7 @@ ITEMS_TO_SYNC=(
     "cava"
 )
 
-echo "Starting selective synchronization from $SOURCE_DIR"
+echo "Stage: Starting selective synchronization from $SOURCE_DIR"
 echo "Target directory: $DEST_DIR"
 echo "================================================================="
 
