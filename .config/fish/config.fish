@@ -8,6 +8,17 @@ starship init fish | source
 # =            Custom Greeting Function                   =
 # =========================================================
 function fish_greeting
+    # put image in ~/shelldeco to show them
+    set image_dir ~/shelldeco/
+    if test -d $image_dir
+        set image_files (find $image_dir -type f -name "*.png" -print0 | string split0)
+        if test -n "$image_files"
+            set random_image (random choice $image_files)
+            chafa --size 30x25 $random_image
+        end
+    end
+    printf '\n'
+    toilet -f pagga VERITAS | lolcat
     # --- 1. 收集信息 ---
 
     # 获取日期和时间
@@ -80,18 +91,6 @@ alias mpsuzumi='mpvpaper eDP-1 -o "no-audio loop input-ipc-server=/tmp/mpv-socke
 alias paperpause='echo "cycle pause" | socat - /tmp/mpv-socket'
 
 alias catclock='arttime --nolearn -a kissingcats -b kissingcats2 -t "Since we found love within, we don\'t bother rats - Wise cats" --ac 3'
-
-# put image in ~/shelldeco to show them
-set image_dir ~/shelldeco/
-if test -d $image_dir
-    set image_files (find $image_dir -type f -name "*.png" -print0 | string split0)
-    if test -n "$image_files"
-        set random_image (random choice $image_files)
-        chafa --size 30x25 $random_image
-    end
-end
-
-toilet -f pagga VERITAS | lolcat
 
 # zoxide: Add this to the end of your config file (usually ~/.config/fish/config.fish)
 zoxide init fish | source
