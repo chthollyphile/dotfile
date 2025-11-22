@@ -8,9 +8,9 @@ tested in Omarchy 3.2
 
 ## Warning
 
-> Do not copy [envs.conf](/.config/hypr/envs.conf) into your setup unless you fully understand the changes it contains.
+> Do not copy [envs.conf](/.config/hypr/envs.conf) and [env-hyprland](/.config/uwsm/env-hyprland) into your setup unless you fully understand the changes it contains.
 
-The [envs.conf](/.config/hypr/envs.conf) file includes fixes for some GPU-related issues. These fixes are tailored specifically for my current machine (i7-12800H + 3070 Ti laptop). However, you can reference them to help adjust your own setup.
+The [envs.conf](/.config/hypr/envs.conf) and [env-hyprland](/.config/uwsm/env-hyprland) files include fixes for some GPU-related issues. These fixes are tailored specifically for my current machine (i7-12800H + 3070 Ti laptop). However, you can reference them to help adjust your own setup.
 
 ## External dependencies
 
