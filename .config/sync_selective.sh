@@ -27,6 +27,8 @@ ITEMS_TO_SYNC=(
     "waybar"
     "waylyrics"
     "cava"
+    "fcitx5"
+    "fcitx.conf"
 )
 
 echo "Stage: Starting selective synchronization from $SOURCE_DIR"

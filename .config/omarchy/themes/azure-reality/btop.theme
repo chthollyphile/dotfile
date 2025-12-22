@@ -1,82 +1,69 @@
-# Theme: tokyo-night
-# By: Pascal Jaeger
+# ────────────────────────────────────────────────────────────
+# BTOP THEME — Rainy Night City (matches your wallpaper)
+# ────────────────────────────────────────────────────────────
 
-# Main bg
-theme[main_bg]="#1a1b26"
+# Transparent / dark night background
+theme[main_bg]="#1e2030"
 
-# Main text color
-theme[main_fg]="#cfc9c2"
+# Main text – soft grey-blue (city lights)
+theme[main_fg]="#cdd3e1"
 
-# Title color for boxes
-theme[title]="#cfc9c2"
+# Titles – light blue highlight (lamp glow)
+theme[title]="#d6e7ff"
 
-# Highlight color for keyboard shortcuts
-theme[hi_fg]="#7dcfff"
+# Highlight text – muted light grey-blue
+theme[hi_fg]="#bfc6d4"
 
-# Background color of selected item in processes box
-theme[selected_bg]="#414868"
+# Selected row – deeper night shade
+theme[selected_bg]="#14151f"
 
-# Foreground color of selected item in processes box
-theme[selected_fg]="#cfc9c2"
+# Selected row text – bright white-blue
+theme[selected_fg]="#e8f1ff"
 
-# Color of inactive/disabled text
-theme[inactive_fg]="#565f89"
+# Inactive/dim text – distant-building grey
+theme[inactive_fg]="#7d8291"
 
-# Misc colors for processes box including mini cpu graphs, details memory graph and details status text
-theme[proc_misc]="#7dcfff"
+# Misc text – light city grey
+theme[proc_misc]="#bfc6d4"
 
-# Cpu box outline color
-theme[cpu_box]="#565f89"
+# Box outlines – subtle bluish-grey (window frame color)
+theme[cpu_box]="#292b3b"
+theme[mem_box]="#292b3b"
+theme[net_box]="#292b3b"
+theme[proc_box]="#292b3b"
 
-# Memory/disks box outline color
-theme[mem_box]="#565f89"
+# Divider lines – same subtle outline tone
+theme[div_line]="#292b3b"
 
-# Net up/down box outline color
-theme[net_box]="#565f89"
+# Graph gradients – smooth blue-grey (rain & neon reflections)
+theme[temp_start]="#4a4f65"
+theme[temp_mid]="#8c92a3"
+theme[temp_end]="#d6e7ff"
 
-# Processes box outline color
-theme[proc_box]="#565f89"
+theme[cpu_start]="#4a4f65"
+theme[cpu_mid]="#8c92a3"
+theme[cpu_end]="#d6e7ff"
 
-# Box divider line and small boxes line color
-theme[div_line]="#565f89"
+theme[free_start]="#4a4f65"
+theme[free_mid]="#8c92a3"
+theme[free_end]="#d6e7ff"
 
-# Temperature graph colors
-theme[temp_start]="#9ece6a"
-theme[temp_mid]="#e0af68"
-theme[temp_end]="#f7768e"
+theme[cached_start]="#4a4f65"
+theme[cached_mid]="#8c92a3"
+theme[cached_end]="#d6e7ff"
 
-# CPU graph colors
-theme[cpu_start]="#9ece6a"
-theme[cpu_mid]="#e0af68"
-theme[cpu_end]="#f7768e"
+theme[available_start]="#4a4f65"
+theme[available_mid]="#8c92a3"
+theme[available_end]="#d6e7ff"
 
-# Mem/Disk free meter
-theme[free_start]="#9ece6a"
-theme[free_mid]="#e0af68"
-theme[free_end]="#f7768e"
+theme[used_start]="#4a4f65"
+theme[used_mid]="#8c92a3"
+theme[used_end]="#d6e7ff"
 
-# Mem/Disk cached meter
-theme[cached_start]="#9ece6a"
-theme[cached_mid]="#e0af68"
-theme[cached_end]="#f7768e"
+theme[download_start]="#4a4f65"
+theme[download_mid]="#8c92a3"
+theme[download_end]="#d6e7ff"
 
-# Mem/Disk available meter
-theme[available_start]="#9ece6a"
-theme[available_mid]="#e0af68"
-theme[available_end]="#f7768e"
-
-# Mem/Disk used meter
-theme[used_start]="#9ece6a"
-theme[used_mid]="#e0af68"
-theme[used_end]="#f7768e"
-
-# Download graph colors
-theme[download_start]="#9ece6a"
-theme[download_mid]="#e0af68"
-theme[download_end]="#f7768e"
-
-# Upload graph colors
-theme[upload_start]="#9ece6a"
-theme[upload_mid]="#e0af68"
-theme[upload_end]="#f7768e"
-
+theme[upload_start]="#4a4f65"
+theme[upload_mid]="#8c92a3"
+theme[upload_end]="#d6e7ff"

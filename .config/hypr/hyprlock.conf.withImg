@@ -20,7 +20,7 @@ animations {
 input-field {
     monitor =
     size = 650, 100
-    position = 0, -150
+    position = 0, -350
     halign = center
     valign = center
 
@@ -45,19 +45,19 @@ auth {
     fingerprint:enabled = true
 }
 
-# image {
-#     monitor =
-#     path = /home/lia/.config/hypr/sakuramoyu.png
-#     size = 500
-#     rounding = 0
-#     border_size = 0
-#
-#     position = 0, -30
-#     halign = center
-#     valign = center
-#
-#     # shadow_passes = 1 # 如果想要阴影效果可以保留
-# }
+image {
+    monitor =
+    path = /home/lia/.config/hypr/sakuramoyu.png
+    size = 500
+    rounding = 0
+    border_size = 0
+    
+    position = 0, -30
+    halign = center
+    valign = center
+    
+    # shadow_passes = 1 # 如果想要阴影效果可以保留
+}
 
 # Hours
 label {
@@ -70,7 +70,7 @@ label {
     shadow_size = 0
     shadow_color = rgba(94, 94, 94, 0.5)
 
-    position = 0, 420
+    position = 0, 520
     halign = center
     valign = center
 }
@@ -86,7 +86,7 @@ label {
     shadow_size = 0
     shadow_color = rgba(94, 94, 94, 0.5)
 
-    position = 0, 220
+    position = 0, 320
     halign = center
     valign = center
 }
