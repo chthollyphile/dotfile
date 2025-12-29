@@ -5,8 +5,9 @@ right_format = "[$python$time]($style)"
 
 
 [python]
-format = '[${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+format = '[$symbol${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
 style = "bold cyan"
+symbol = " "
 
 [username]
 show_always = false
