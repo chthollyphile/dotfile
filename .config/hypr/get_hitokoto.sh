@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- 配置 ---
-QUOTE_FILE="$HOME/.config/hyprlock-script/quote.txt"
+QUOTE_FILE="$HOME/.config/hyprlock-script/quote_2.txt"
 FALLBACK_QUOTE="私は虚無の先  筆の限界"
 
 # ----------------------------------------------------QUOTE_FILE
