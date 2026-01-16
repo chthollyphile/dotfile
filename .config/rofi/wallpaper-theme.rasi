@@ -1,0 +1,97 @@
+/* 壁纸选择器专用主题 - 紧凑2x2网格 */
+@import "~/.config/omarchy/current/theme/colors.rasi"
+
+* {
+    layout-bg:      @background;
+    layout-fg:      @foreground;
+    layout-accent:  @color4;
+    layout-border:  @color8;
+    transparent:    rgba(0,0,0,0);
+    background-color: @transparent;
+    text-color:       @layout-fg;
+    margin:           0;
+    padding:          0;
+    border:           0;
+}
+
+configuration {
+    modi: "dmenu";
+    font: "JetBrainsMono Nerd Font 11";
+    show-icons: true;
+}
+
+window {
+    width:            480px;
+    background-color: @layout-bg;
+    border:           2px;
+    border-color:     @layout-accent;
+    border-radius:    10px;
+    padding:          12px;
+}
+
+mainbox {
+    spacing:  8px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    border:       0 0 1px 0;
+    border-color: @layout-border;
+    padding:      6px;
+    children:     [ prompt, entry ];
+}
+
+prompt {
+    text-color: @layout-accent;
+    margin:     0 8px 0 0;
+}
+
+entry {
+    placeholder:       "Search...";
+    placeholder-color: @layout-border;
+}
+
+listview {
+    columns:      2;
+    lines:        2;
+    cycle:        false;
+    spacing:      6px;
+    flow:         horizontal;
+    fixed-height: true;
+    scrollbar:    false;
+}
+
+element {
+    orientation:      vertical;
+    padding:          4px;
+    border-radius:    6px;
+    background-color: @transparent;
+    children:         [ element-icon ];
+}
+
+element normal.normal, element alternate.normal,
+element normal.active, element alternate.active,
+element normal.urgent, element alternate.urgent {
+    background-color: @transparent;
+}
+
+element selected.normal, element selected.active, element selected.urgent {
+    background-color: rgba(255, 255, 255, 0.08);
+    border:           2px;
+    border-color:     @layout-accent;
+}
+
+element-icon {
+    size:             220px 130px;
+    cursor:           pointer;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+}
+
+element-text {
+    enabled: false;
+}
+
+scrollbar {
+    enabled: false;
+}

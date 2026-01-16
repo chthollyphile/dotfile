@@ -1,0 +1,111 @@
+/* 1. 引入刚才生成的文件 */
+@import "~/.config/omarchy/current/theme/colors.rasi"
+
+configuration {
+    modi: "dmenu";
+    font: "JetBrainsMono Nerd Font 12";
+    show-icons: true;
+}
+
+/* 2. 变量映射与样式定义 */
+* {
+    /* --- 映射区 --- */
+    /* 我们把生成的 colors.rasi 里的变量映射给布局使用 */
+    
+    layout-bg:      @background;    /* 读取 Alacritty 的背景 */
+    layout-fg:      @foreground;    /* 读取 Alacritty 的前景 */
+    
+    /* 核心映射：使用 color4 (蓝色) 作为强调色 */
+    layout-accent:  @color4;        
+    
+    /* 使用 color8 (亮黑) 作为次要边框色 */
+    layout-border:  @color8;        
+
+    /* --- 布局逻辑 (保持不变) --- */
+    transparent:    rgba(0,0,0,0);
+    
+    background-color: @transparent;
+    text-color:       @layout-fg;
+    margin:           0;
+    padding:          0;
+    border:           0;
+}
+
+/* --- 下面是之前的去背景、网格布局代码 --- */
+
+window {
+    width:            500px;
+    height:           460px;
+    background-color: @layout-bg;
+    border:           2px;
+    border-color:     @layout-accent;
+    border-radius:    12px;
+    padding:          15px;
+}
+
+mainbox {
+    spacing:  10px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    border:       0 0 2px 0;
+    border-color: @layout-border;
+    margin:       0 0 5px 0;
+    padding:      8px;
+    children:     [ prompt, entry ];
+}
+
+prompt {
+    text-color: @layout-accent;
+    font:       "JetBrainsMono Nerd Font Bold 14";
+    margin:     0 10px 0 0;
+}
+
+entry {
+    placeholder:       "Search Wallpaper...";
+    placeholder-color: @layout-border;
+    font:              "JetBrainsMono Nerd Font 14";
+}
+
+listview {
+    columns:      2;
+    lines:        2;
+    cycle:        false;
+    spacing:      8px;
+    flow:         horizontal;
+    fixed-height: true;
+}
+
+element {
+    orientation:      vertical;
+    padding:          5px;
+    border-radius:    8px;
+    background-color: @transparent;
+    children:         [ element-icon ];
+}
+
+/* 强制清除所有状态背景 */
+element normal.normal, element alternate.normal, 
+element normal.active, element alternate.active,
+element normal.urgent, element alternate.urgent {
+    background-color: @transparent;
+}
+
+/* 选中高亮 */
+element selected.normal, element selected.active, element selected.urgent {
+    background-color: rgba(255, 255, 255, 0.05);
+    border:           3px;
+    border-color:     @layout-accent;
+}
+
+element-icon {
+    size:             200px 120px;
+    cursor:           pointer;
+    horizontal-align: 0.5;
+    vertical-align:   0.5;
+}
+
+element-text {
+    enabled: false;
+}

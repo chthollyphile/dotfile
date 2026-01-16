@@ -29,6 +29,7 @@ ITEMS_TO_SYNC=(
     "cava"
     "fcitx5"
     "fcitx.conf"
+    "rofi"
 )
 
 echo "Stage: Starting selective synchronization from $SOURCE_DIR"
