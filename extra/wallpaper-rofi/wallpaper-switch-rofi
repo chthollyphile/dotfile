@@ -1,19 +1,33 @@
 #!/bin/bash
 
 # 配置路径
-BG_DIR="$HOME/.config/omarchy/current/theme/backgrounds/"
+THEME_NAME=$(cat "$HOME/.config/omarchy/current/theme.name" 2>/dev/null)
+THEME_BACKGROUNDS_PATH="$HOME/.config/omarchy/current/theme/backgrounds/"
+USER_BACKGROUNDS_PATH="$HOME/.config/omarchy/backgrounds/$THEME_NAME/"
 LINK="$HOME/.config/omarchy/current/background"
 
 SCRIPT_DIR="$HOME/.config/rofi"
 
-SELECTED=$(find "$BG_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.webp" \) | sort | while read -r filepath; do
+SELECTED=$(find -L "$USER_BACKGROUNDS_PATH" "$THEME_BACKGROUNDS_PATH" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.webp" \) 2>/dev/null | sort | while read -r filepath; do
     filename=$(basename "$filepath")
     echo -en "${filename}\0icon\x1f${filepath}\n"
 done | rofi -dmenu -i -p " " -theme "$SCRIPT_DIR/wallpaper-theme.rasi") 
 
 if [[ -n "$SELECTED" ]]; then
-    ln -nsf "$BG_DIR/$SELECTED" "$LINK"
-    pkill -x swaybg
-    setsid uwsm-app -- awww img --transition-type grow --transition-pos 0.8,0.9 "$LINK" >/dev/null 2>&1
-    notify-send "Wallpaper Set" "$SELECTED"
+    # Resolve full path (User > Theme)
+    TARGET_PATH=""
+    if [[ -f "$USER_BACKGROUNDS_PATH/$SELECTED" ]]; then
+        TARGET_PATH="$USER_BACKGROUNDS_PATH/$SELECTED"
+    elif [[ -f "$THEME_BACKGROUNDS_PATH/$SELECTED" ]]; then
+        TARGET_PATH="$THEME_BACKGROUNDS_PATH/$SELECTED"
+    fi
+
+    if [[ -n "$TARGET_PATH" ]]; then
+        ln -nsf "$TARGET_PATH" "$LINK"
+        pkill -x swaybg
+        setsid uwsm-app -- awww img --transition-type grow --transition-pos 0.8,0.9 "$LINK" >/dev/null 2>&1
+        notify-send "Wallpaper Set" "$SELECTED"
+    else
+        notify-send "Error" "Could not resolve path for $SELECTED"
+    fi
 fi
