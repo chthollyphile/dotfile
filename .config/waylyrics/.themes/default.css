@@ -3,12 +3,16 @@ headerbar {
   opacity: 0;
 }
 
+window {
+  border: 0;
+}
+
 /* 主窗口 */
 window#main-window {
   background-color: hsla(0, 0%, 0%, 0);
 
   /* 减少 Gtk CSD 的阴影 */
-  box-shadow: 0 0 1px 0;
+  box-shadow: 0 0 0 0;
 }
 
 /* 搜索窗口 */
