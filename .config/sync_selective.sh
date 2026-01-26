@@ -30,6 +30,7 @@ ITEMS_TO_SYNC=(
     "fcitx5"
     "fcitx.conf"
     "rofi"
+    "mpv"
 )
 
 echo "Stage: Starting selective synchronization from $SOURCE_DIR"
