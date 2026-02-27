@@ -31,6 +31,7 @@ ITEMS_TO_SYNC=(
     "fcitx.conf"
     "rofi"
     "mpv"
+    "elephant/menus"
 )
 
 echo "Stage: Starting selective synchronization from $SOURCE_DIR"
