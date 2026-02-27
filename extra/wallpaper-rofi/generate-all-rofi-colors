@@ -20,47 +20,67 @@ for root in "${THEME_ROOTS[@]}"; do
     find "$root" -mindepth 1 -maxdepth 1 -type d | while read -r theme_dir; do
         
         theme_name=$(basename "$theme_dir")
-        SOURCE_FILE="$theme_dir/alacritty.toml"
+        COLORS_TOML="$theme_dir/colors.toml"
+        ALACRITTY_TOML="$theme_dir/alacritty.toml"
         TARGET_FILE="$theme_dir/colors.rasi"
 
-        if [[ -f "$SOURCE_FILE" ]]; then
-            # --- AWK 解析器 (修复引号处理) ---
+        if [[ -f "$COLORS_TOML" ]]; then
+            # --- 新格式: colors.toml (扁平 key=value) ---
+            awk '
+            BEGIN {
+                print "/* 自动生成自 " theme " 的 colors.toml */"
+                print "* {"
+            }
+            /=/ {
+                gsub(/^[ \t]+|[ \t]+$/, "")
+                split($0, arr, "=")
+                key = arr[1]
+                gsub(/[ \t]/, "", key)
+                val = arr[2]
+                gsub(/[ "\047]/, "", val)
+
+                if (key == "background")  print "    background: " val ";"
+                if (key == "foreground")  print "    foreground: " val ";"
+                if (key ~ /^color[0-9]+$/) {
+                    # 对齐: color0~color9 补一个空格
+                    if (length(key) == 6)
+                        printf "    %s:  %s;\n", key, val
+                    else
+                        printf "    %s: %s;\n", key, val
+                }
+            }
+            END {
+                print "}"
+            }
+            ' theme="$theme_name" "$COLORS_TOML" > "$TARGET_FILE"
+
+            echo -e "✅ [$theme_name] \t-> 已生成 (colors.toml)"
+
+        elif [[ -f "$ALACRITTY_TOML" ]]; then
+            # --- 旧格式: alacritty.toml (分段式, 向后兼容) ---
             awk '
             BEGIN {
                 print "/* 自动生成自 " theme " 的 alacritty.toml */"
                 print "* {"
                 section = ""
             }
-
-            # 识别 Section
             /^\[.*\]/ {
                 gsub(/[\[\]]/, "", $0)
                 section = $0
                 next
             }
-
-            # 提取 Key=Value
             /=/ {
-                # 1. 移除行首尾的空白字符
                 gsub(/^[ \t]+|[ \t]+$/, "")
-                
-                # 2. 以第一个等号分割 key 和 value
                 split($0, arr, "=")
-                
                 key = arr[1]
-                gsub(/[ \t]/, "", key) # 清理 key 中的空格
-                
+                gsub(/[ \t]/, "", key)
                 val = arr[2]
-                # 3. [关键修复] 同时移除空格、双引号(") 和 单引号(\047)
                 gsub(/[ "\047]/, "", val)
 
-                # [colors.primary] -> background/foreground
                 if (section == "colors.primary") {
                     if (key == "background") print "    background: " val ";"
                     if (key == "foreground") print "    foreground: " val ";"
                 }
-
-                # [colors.normal] -> color0 ~ color7
                 if (section == "colors.normal") {
                     if (key == "black")   print "    color0: " val ";"
                     if (key == "red")     print "    color1: " val ";"
@@ -71,8 +91,6 @@ for root in "${THEME_ROOTS[@]}"; do
                     if (key == "cyan")    print "    color6: " val ";"
                     if (key == "white")   print "    color7: " val ";"
                 }
-
-                # [colors.bright] -> color8 ~ color15
                 if (section == "colors.bright") {
                     if (key == "black")   print "    color8:  " val ";"
                     if (key == "red")     print "    color9:  " val ";"
@@ -87,11 +105,9 @@ for root in "${THEME_ROOTS[@]}"; do
             END {
                 print "}"
             }
-            ' theme="$theme_name" "$SOURCE_FILE" > "$TARGET_FILE"
-            
-            echo -e "✅ [$theme_name] \t-> 已生成"
-        else
-            : 
+            ' theme="$theme_name" "$ALACRITTY_TOML" > "$TARGET_FILE"
+
+            echo -e "✅ [$theme_name] \t-> 已生成 (alacritty.toml)"
         fi
     done
 done
