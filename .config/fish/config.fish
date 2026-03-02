@@ -92,6 +92,8 @@ alias paperpause='echo "cycle pause" | socat - /tmp/mpv-socket'
 
 alias catclock='arttime --nolearn -a kissingcats -b kissingcats2 -t "Since we found love within, we don\'t bother rats - Wise cats" --ac 3'
 
+alias t='tmux attach || tmux new -s Work'
+
 # ssh-agent setup
 if status is-login; or status is-interactive
     keychain --eval --quiet --noask id_ed25519 id_rsa | source
