@@ -1,0 +1,83 @@
+# Main background, empty for terminal default, need to be empty if you want transparent background
+theme[main_bg]="#110e11"
+
+# Main text color
+theme[main_fg]="#f4e1eb"
+
+# Title color for boxes
+theme[title]="#f4e1eb"
+
+# Highlight color for keyboard shortcuts
+theme[hi_fg]="#f92b75"
+
+# Background color of selected item in processes box
+theme[selected_bg]="#4a1f33"
+
+# Foreground color of selected item in processes box
+theme[selected_fg]="#ff7ba5"
+
+# Color of inactive/disabled text
+theme[inactive_fg]="#523b45"
+
+# Color of text appearing on top of graphs, i.e uptime and current network graph scaling
+theme[graph_text]="#dfc8d5"
+
+# Background color of the percentage meters
+theme[meter_bg]="#1e181b"
+
+# Misc colors for processes box including mini cpu graphs, details memory graph and details status text
+theme[proc_misc]="#cba1c2"
+
+# CPU, Memory, Network, Proc box outline colors
+theme[cpu_box]="#f92b75" # Bright Pink
+theme[mem_box]="#cba1c2" # Muted Pink/Mauve
+theme[net_box]="#b48ead" # Purple
+theme[proc_box]="#ea4c89" # Deep Pink
+
+# Box divider line and small boxes line color
+theme[div_line]="#523b45"
+
+# Temperature graph color (Green -> Yellow -> Pink/Red)
+theme[temp_start]="#a1c2af"
+theme[temp_mid]="#e5c07b"
+theme[temp_end]="#f92b75"
+
+# CPU graph colors (Muted Purple -> Deep Pink -> Bright Pink)
+theme[cpu_start]="#b48ead"
+theme[cpu_mid]="#ea4c89"
+theme[cpu_end]="#f92b75"
+
+# Mem/Disk free meter (Purple -> Mauve -> Teal)
+theme[free_start]="#cba1c2"
+theme[free_mid]="#b48ead"
+theme[free_end]="#8abeb7"
+
+# Mem/Disk cached meter (Teal -> Mauve -> Purple)
+theme[cached_start]="#8abeb7"
+theme[cached_mid]="#b48ead"
+theme[cached_end]="#cba1c2"
+
+# Mem/Disk available meter (Yellow -> Deep Pink -> Bright Pink)
+theme[available_start]="#e5c07b"
+theme[available_mid]="#ea4c89"
+theme[available_end]="#f92b75"
+
+# Mem/Disk used meter (Green -> Muted Pink -> Bright Pink)
+theme[used_start]="#a1c2af"
+theme[used_mid]="#cba1c2"
+theme[used_end]="#ff7ba5"
+
+# Download graph colors (Purple -> Deep Pink -> Bright Pink)
+theme[download_start]="#b48ead"
+theme[download_mid]="#ea4c89"
+theme[download_end]="#f92b75"
+
+# Upload graph colors (Teal -> Pale Pink -> Light Pink)
+theme[upload_start]="#8abeb7"
+theme[upload_mid]="#dfc8d5"
+theme[upload_end]="#ff7ba5"
+
+# Process box color gradient for threads, mem and cpu usage (Teal -> Purple -> Bright Pink)
+theme[process_start]="#8abeb7"
+theme[process_mid]="#b48ead"
+theme[process_end]="#f92b75"

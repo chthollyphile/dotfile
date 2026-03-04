@@ -66,6 +66,7 @@ for item in "${ITEMS_TO_SYNC[@]}"; do
                 rsync -avh --delete \
                     --include='azure-dream/***' \
                     --include='azure-reality/***' \
+                    --include='menhera-noise/***' \
                     --exclude='*' \
                     "$SOURCE_PATH/themes/" "$DEST_PATH/themes/"
             else
