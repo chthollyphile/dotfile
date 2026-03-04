@@ -1,7 +1,13 @@
 @import "../omarchy/current/theme/waybar.css";
 
+/* 1. 根据导入的 @background 自动计算 0.8 透明度的颜色 */
+@define-color background-nt alpha(@background, 0.72);
+
+/* 2. 衍生一个完全透明的背景 */
+@define-color background-transparent alpha(@background, 0);
+
 * {
-  background-color: @background;
+  background-color: @background-transparent;
   color: @foreground;
 
   border: none;

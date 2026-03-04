@@ -1,4 +1,4 @@
-@define-color foreground #cdd6f4;
-@define-color background rgba(26,27,38,0);
-@define-color background-nt rgba(26,27,38,0.8);
+@define-color foreground #f0bffe;
+@define-color background rgba(26,27,38,1);
+@define-color background-nt rgba(17, 17, 35, 0.8);
 /* @define-color background-nt rgba(26,27,38,0.45); */
