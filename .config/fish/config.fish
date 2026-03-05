@@ -18,7 +18,11 @@ function fish_greeting
         end
     end
     printf '\n'
-    toilet -f pagga VERITAS | lolcat
+
+    set ba_groups Abydos Ghenna Trinity Millennium Hyakkiyako Shanhaijing Arius Veritas "Game Dev" Seminar Sisterhood "Tea Party"
+    set VERITAS (random choice $ba_groups)
+
+    toilet -f pagga $VERITAS
     # --- 1. 收集信息 ---
 
     # 获取日期和时间
