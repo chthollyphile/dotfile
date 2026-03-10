@@ -17,7 +17,7 @@ function fish_greeting
             chafa --size 22x22 $random_image
         end
     end
-    printf '\n'
+    printf '\n' im
 
     set ba_groups Abydos Ghenna Trinity Millennium Hyakkiyako Shanhaijing Arius Veritas "Game Dev" Seminar Sisterhood "Tea Party"
     set VERITAS (random choice $ba_groups)

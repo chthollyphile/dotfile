@@ -175,11 +175,11 @@
 	  "format": "{player_icon} {title}",
 	  "format-paused": "{status_icon} <i>{title}</i>",
 	  "player-icons": {
-		  "default": "🌸",
-		  "mpv": "🎵"
+		  "default": "󰎆",
+		  "mpv": "󰎆"
 	  },
 	  "status-icons": {
-		  "paused": "❄️"
+		  "paused": "󰏥"
 	  },
     "title-len": 40
 	// "ignored-players": ["firefox"]
