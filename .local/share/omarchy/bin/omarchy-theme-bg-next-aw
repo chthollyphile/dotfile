@@ -41,8 +41,23 @@ else
     NEW_BACKGROUND="${BACKGROUNDS[$NEXT_INDEX]}"
   fi
 
+  CURRENT_BACKGROUND_LOCK_LINK="$HOME/.config/omarchy/current/background-lock"
+
   # Set new background symlink
   ln -nsf "$NEW_BACKGROUND" "$CURRENT_BACKGROUND_LINK"
+
+  # Create symlink for lock screen
+  if [[ "${NEW_BACKGROUND,,}" == *.gif ]]; then
+    if [[ -f "${NEW_BACKGROUND%.*}.lock.png" ]]; then
+      ln -nsf "${NEW_BACKGROUND%.*}.lock.png" "$CURRENT_BACKGROUND_LOCK_LINK"
+    elif [[ -f "${NEW_BACKGROUND%.*}.lock.jpg" ]]; then
+      ln -nsf "${NEW_BACKGROUND%.*}.lock.jpg" "$CURRENT_BACKGROUND_LOCK_LINK"
+    else
+      ln -nsf "$NEW_BACKGROUND" "$CURRENT_BACKGROUND_LOCK_LINK"
+    fi
+  else
+    ln -nsf "$NEW_BACKGROUND" "$CURRENT_BACKGROUND_LOCK_LINK"
+  fi
 
   # call awww deamon
   pkill -x swaybg

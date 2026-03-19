@@ -92,6 +92,7 @@ alias lta='lt -a'
 
 alias mpjunko='mpvpaper eDP-1 -o "no-audio loop input-ipc-server=/tmp/mpv-socket" /home/lia/Videos/wallpaper-video/junko_newYear.mp4'
 alias mpsuzumi='mpvpaper eDP-1 -o "no-audio loop input-ipc-server=/tmp/mpv-socket" /home/lia/Videos/wallpaper-video/suzumi.webm'
+alias mpfox='mpvpaper eDP-1 -o "no-audio loop input-ipc-server=/tmp/mpv-socket" /home/lia/Videos/wallpaper-video/fox.mp4'
 alias paperpause='echo "cycle pause" | socat - /tmp/mpv-socket'
 
 alias catclock='arttime --nolearn -a kissingcats -b kissingcats2 -t "Since we found love within, we don\'t bother rats - Wise cats" --ac 3'
