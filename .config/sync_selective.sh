@@ -58,12 +58,13 @@ for item in "${ITEMS_TO_SYNC[@]}"; do
         if [ "$item" = "omarchy" ]; then
             echo "   -> Special-case: syncing 'omarchy' but only selected themes"
             # Sync omarchy root but exclude the themes directory so we can handle it separately.
-            rsync -avh --delete --exclude 'themes/' "$SOURCE_PATH/" "$DEST_PATH/"
+            rsync -avh --delete --exclude 'themes/' --exclude='*.gif' "$SOURCE_PATH/" "$DEST_PATH/"
 
             # Handle themes: only include the two allowed themes and delete others in destination.
             if [ -d "$SOURCE_PATH/themes" ]; then
                 mkdir -p "$DEST_PATH/themes"
                 rsync -avh --delete \
+                    --exclude='*.gif' \
                     --include='azure-dream/***' \
                     --include='azure-reality/***' \
                     --include='menhera-noise/***' \
@@ -78,11 +79,11 @@ for item in "${ITEMS_TO_SYNC[@]}"; do
             fi
         else
             # For directories, sync contents and add a trailing slash to source and destination.
-            rsync -avh --delete "$SOURCE_PATH/" "$DEST_PATH/"
+            rsync -avh --delete --exclude='*.gif' "$SOURCE_PATH/" "$DEST_PATH/"
         fi
     else
         # For files, sync the file directly into the destination directory.
-        rsync -avh "$SOURCE_PATH" "$DEST_DIR/"
+        rsync -avh --exclude='*.gif' "$SOURCE_PATH" "$DEST_DIR/"
     fi
 done
 
