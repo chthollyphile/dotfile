@@ -47,9 +47,10 @@ windowrule {
   match:class = ^(io.github.waylyrics.Waylyrics)$
 }
 
+$monitor=eDP-1,2560x1440@240.00,0x0,1.60
+
+monitor=eDP-1,2560x1440@240.00,0x0,1.60
+monitor=DP-2,3840x2160@120.00,1600x0,1.50
+
 # Toggle config flags dynamically
 source = ~/.local/state/omarchy/toggles/hypr/*.conf
-
-
-monitor=DP-2,3840x2160@120.00,1600x0,1.50
-monitor=eDP-1,2560x1440@240.00,0x0,1.60
