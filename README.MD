@@ -4,7 +4,7 @@
 
 Dotfile for my Omarchy Linux setup.
 
-tested in Omarchy 3.4.2
+tested in Omarchy 3.8.1
 
 ## Warning
 
