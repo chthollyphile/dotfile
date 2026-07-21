@@ -106,3 +106,6 @@ end
 
 # zoxide: Add this to the end of your config file (usually ~/.config/fish/config.fish)
 zoxide init fish | source
+
+# opencode
+fish_add_path /home/lia/.opencode/bin
