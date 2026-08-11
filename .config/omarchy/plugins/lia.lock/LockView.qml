@@ -21,17 +21,27 @@ Item {
   property string quoteText: "私は虚無の先  筆の限界"
   property string hoursText: "00"
   property string minutesText: "00"
+  property real detectedDisplayScale: 0
 
   readonly property string home: Quickshell.env("HOME")
   readonly property string quoteScript: root.home + "/.config/hypr/get_hitokoto.sh"
-  readonly property real displayScale: Math.max(1, Screen.devicePixelRatio || 1)
+  readonly property string runtimeScreenName: Screen.name || ""
+  readonly property real pangoPointScale: 96 / 72
+  // Qt rounds a 1.6 fractional output scale up to a 2x buffer DPR. Hyprlock
+  // geometry is expressed in physical output pixels, so query Hyprland's
+  // exact monitor scale and convert it into QML's logical coordinates.
+  readonly property real displayScale: root.detectedDisplayScale > 0
+    ? root.detectedDisplayScale
+    : Math.max(1, Screen.devicePixelRatio || 1)
   readonly property string placeholderText: "as the Nights Reincarnation..."
   readonly property real fieldWidth: 650 / root.displayScale
   readonly property real fieldHeight: 100 / root.displayScale
   readonly property real outlineThickness: 3 / root.displayScale
-  readonly property real fieldFontSize: 16 / root.displayScale
-  readonly property real passwordDotFontSize: 16 / root.displayScale
-  readonly property real passwordDotLetterSpacing: 3 / root.displayScale
+  // Hyprlock renders its placeholder at one quarter of the field height and
+  // passes that value to Pango as points, not pixels.
+  readonly property real fieldFontSize: 25 * root.pangoPointScale / root.displayScale
+  readonly property real passwordDotFontSize: 25 * root.pangoPointScale / root.displayScale
+  readonly property real passwordDotLetterSpacing: 5 / root.displayScale
   // Space to keep clear on each side of the field for the fingerprint icon
   // (icon width plus a gap) so the centered dots never run under it.
   readonly property real fingerprintReserve: fingerprintConfigured ? Math.round(fingerprintIcon.implicitWidth + 12) : 0
@@ -69,6 +79,10 @@ Item {
     quoteProc.running = true
   }
 
+  function refreshDisplayScale() {
+    if (!monitorScaleProc.running) monitorScaleProc.running = true
+  }
+
   function forcePasswordFocus() {
     passwordInput.forceActiveFocus()
   }
@@ -91,12 +105,14 @@ Item {
   onLoadBackgroundChanged: {
     if (loadBackground) {
       updateClock()
+      refreshDisplayScale()
       Qt.callLater(refreshQuote)
     }
   }
   Component.onCompleted: {
     syncPasswordText()
     updateClock()
+    refreshDisplayScale()
     if (loadBackground) refreshQuote()
     if (inputEnabled) Qt.callLater(forcePasswordFocus)
   }
@@ -115,6 +131,27 @@ Item {
     repeat: true
     running: root.loadBackground
     onTriggered: root.refreshQuote()
+  }
+
+  Process {
+    id: monitorScaleProc
+    command: ["hyprctl", "-j", "monitors"]
+    stdout: StdioCollector {
+      waitForEnd: true
+      onStreamFinished: {
+        try {
+          var monitors = JSON.parse(String(text || "[]"))
+          for (var i = 0; i < monitors.length; ++i) {
+            if (monitors[i].name === root.runtimeScreenName && Number(monitors[i].scale) > 0) {
+              root.detectedDisplayScale = Number(monitors[i].scale)
+              return
+            }
+          }
+        } catch (error) {
+          // Keep Qt's DPR fallback if Hyprland IPC is temporarily unavailable.
+        }
+      }
+    }
   }
 
   Process {
@@ -160,9 +197,11 @@ Item {
       autoPaddingEnabled: false
       blurEnabled: root.loadBackground && wallpaper.status === Image.Ready
       blur: 1.0
-      blurMax: 128
-      blurMultiplier: 1.25
-      contrast: -0.08
+      // The old Hyprlock background used blur_passes=3 and blur_size=7.
+      // A 21px cap preserves roughly the same amount of wallpaper detail;
+      // the stock shell's 128px blur was substantially stronger.
+      blurMax: 21
+      blurMultiplier: 1.0
     }
 
     // These elements mirror the layout in
@@ -173,11 +212,12 @@ Item {
       width: Math.max(1, parent.width - 80 / root.displayScale)
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: -500 / root.displayScale
+      // Hyprlock uses a bottom-left coordinate system: negative Y moves down.
+      anchors.verticalCenterOffset: 500 / root.displayScale
       text: root.quoteText
       color: Qt.rgba(200 / 255, 200 / 255, 200 / 255, 0.9)
       font.family: "CaskaydiaMono Nerd Font"
-      font.pixelSize: 20 / root.displayScale
+      font.pixelSize: 20 * root.pangoPointScale / root.displayScale
       horizontalAlignment: Text.AlignHCenter
       wrapMode: Text.WordWrap
       z: 2
@@ -187,14 +227,13 @@ Item {
       id: hoursShadow
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: 520 / root.displayScale
-      x: 1 / root.displayScale
-      y: 1 / root.displayScale
+      anchors.horizontalCenterOffset: 1 / root.displayScale
+      anchors.verticalCenterOffset: (-520 + 1) / root.displayScale
       text: "<b><big> " + root.hoursText + " </big></b>"
       textFormat: Text.RichText
       color: Qt.rgba(94 / 255, 94 / 255, 94 / 255, 0.5)
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 / root.displayScale
+      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
       z: 2
     }
 
@@ -202,12 +241,12 @@ Item {
       id: hoursLabel
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: 520 / root.displayScale
+      anchors.verticalCenterOffset: -520 / root.displayScale
       text: "<b><big> " + root.hoursText + " </big></b>"
       textFormat: Text.RichText
       color: "white"
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 / root.displayScale
+      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
       z: 3
     }
 
@@ -215,14 +254,13 @@ Item {
       id: minutesShadow
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: 320 / root.displayScale
-      x: 1 / root.displayScale
-      y: 1 / root.displayScale
+      anchors.horizontalCenterOffset: 1 / root.displayScale
+      anchors.verticalCenterOffset: (-320 + 1) / root.displayScale
       text: "<b><big> " + root.minutesText + " </big></b>"
       textFormat: Text.RichText
       color: Qt.rgba(94 / 255, 94 / 255, 94 / 255, 0.5)
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 / root.displayScale
+      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
       z: 2
     }
 
@@ -230,12 +268,12 @@ Item {
       id: minutesLabel
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: 320 / root.displayScale
+      anchors.verticalCenterOffset: -320 / root.displayScale
       text: "<b><big> " + root.minutesText + " </big></b>"
       textFormat: Text.RichText
       color: "white"
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 / root.displayScale
+      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
       z: 3
     }
 
@@ -251,7 +289,8 @@ Item {
       width: root.fieldWidth
       height: root.fieldHeight
       anchors.horizontalCenter: parent.horizontalCenter
-      y: (parent.height - height) / 2 - 350 / root.displayScale
+      // Hyprlock position 0,-350 is below center; Qt's Y axis is inverted.
+      y: (parent.height - height) / 2 + 350 / root.displayScale
       color: Qt.rgba(255 / 255, 255 / 255, 255 / 255, 0.1)
       borderSpec: root.inputBorderSpec
       radius: 22 / root.displayScale
