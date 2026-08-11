@@ -208,9 +208,9 @@ Item {
       blurEnabled: root.loadBackground && wallpaper.status === Image.Ready
       blur: 1.0
       // The old Hyprlock background used blur_passes=3 and blur_size=7.
-      // A 21px cap preserves roughly the same amount of wallpaper detail;
-      // the stock shell's 128px blur was substantially stronger.
-      blurMax: 21
+      // Use a moderately stronger blur while preserving the wallpaper shape;
+      // the stock shell's 128px blur remains substantially stronger.
+      blurMax: 32
       blurMultiplier: 1.0
     }
 
@@ -414,7 +414,7 @@ Item {
                 property: "opacity"
                 from: 0
                 to: 1
-                duration: 360
+                duration: 520
                 easing.type: Easing.OutCubic
               }
             }
