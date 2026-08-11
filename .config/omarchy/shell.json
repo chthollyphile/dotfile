@@ -64,6 +64,13 @@
     "lock": 300,
     "screensaver": 150
   },
-  "plugins": [],
+  "disabledPlugins": [
+    "omarchy.lock"
+  ],
+  "plugins": [
+    {
+      "id": "lia.lock"
+    }
+  ],
   "version": 1
 }
