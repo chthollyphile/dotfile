@@ -109,3 +109,6 @@ zoxide init fish | source
 
 # opencode
 fish_add_path /home/lia/.opencode/bin
+
+# kimi-code
+fish_add_path -g "/home/lia/.kimi-code/bin"
