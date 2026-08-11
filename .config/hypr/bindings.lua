@@ -44,3 +44,9 @@ hl.unbind("SUPER + SLASH")
 hl.unbind("SUPER + mouse:273")
 replace("SUPER + ALT + mouse:272", "Resize window", hl.dsp.window.resize(), { mouse = true })
 replace("SUPER + ALT + T", "Fit to screen", hl.dsp.layout("fit active"))
+
+-- ScrollOverview (SUPER+Q; SUPER+G remains window grouping).
+hl.unbind("SUPER + ALT + O")
+hl.bind("SUPER + Q", function()
+    hl.plugin.scrolloverview.overview("toggle all")
+end)

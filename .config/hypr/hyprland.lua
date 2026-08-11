@@ -42,3 +42,34 @@ hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/intel_icd.x86_64.json:/usr/s
 hl.env("LIBVA_DRIVER_NAME", "iHD")
 hl.env("OMARCHY_SCREENSHOT_DIR", (os.getenv("HOME") or "") .. "/Pictures/screenshots")
 hl.env("AQ_DRM_DEVICES", "/dev/dri/intel-igpu:/dev/dri/nvidia-dgpu")
+
+-- ScrollOverview: a niri-style scrolling workspace overview.
+hl.config({
+    plugin = {
+        scrolloverview = {
+            gesture_distance = 300,
+            scale = 0.5,
+            workspace_gap = 100,
+            layout = "vertical",
+            wallpaper = 2,
+            blur = true,
+            input = {
+                -- The global touchpad scroll_factor is 0.1; compensate here
+                -- so overview scrolling has a usable 1.5x effective factor.
+                touchpad_scroll_factor = 10,
+            },
+            shadow = {
+                enabled = true,
+                range = 50,
+            },
+        },
+    },
+})
+
+-- Four-finger vertical swipe opens/closes ScrollOverview.
+-- Three-finger vertical swipe remains workspace switching in input.lua.
+hl.plugin.scrolloverview.gesture({
+    fingers = 4,
+    direction = "vertical",
+    scale = 1.5,
+})
