@@ -1,8 +1,10 @@
 # Omarchy Quattro Dotfiles
 
-![preview](/img/preview.png)
+![preview](/img/preview-q.png)
 
 Personal dotfiles for the current Omarchy Quattro setup.
+
+Tested on Omarchy 4.0.0.r1652.g1c9dfc5-1
 
 The active configuration uses the Lua-based Hyprland layout and the native
 Omarchy Quickshell shell. The three maintained themes are `azure-dream`,
