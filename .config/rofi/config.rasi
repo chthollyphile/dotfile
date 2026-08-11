@@ -1,5 +1,5 @@
 /* 1. 引入刚才生成的文件 */
-@import "~/.config/omarchy/current/theme/colors.rasi"
+@import "~/.local/state/omarchy/current/theme/colors.rasi"
 
 configuration {
     modi: "dmenu";

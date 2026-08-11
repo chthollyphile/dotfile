@@ -1,16 +1,18 @@
-# Azure Reality
+# Omarchy Quattro Dotfiles
 
 ![preview](/img/preview.png)
 
-Dotfile for my Omarchy Linux setup.
+Personal dotfiles for the current Omarchy Quattro setup.
 
-tested in Omarchy 3.8.1
+The active configuration uses the Lua-based Hyprland layout and the native
+Omarchy Quickshell shell. The three maintained themes are `azure-dream`,
+`azure-reality`, and `menhera-noise`.
 
-## Warning
+## Machine-specific settings
 
-> Do not copy [envs.conf](/.config/hypr/envs.conf) and [env-hyprland](/.config/uwsm/env-hyprland) into your setup unless you fully understand the changes it contains.
-
-The [envs.conf](/.config/hypr/envs.conf) and [env-hyprland](/.config/uwsm/env-hyprland) files include fixes for some GPU-related issues. These fixes are tailored specifically for my current machine (i7-12800H + 3070 Ti laptop). However, you can reference them to help adjust your own setup.
+The monitor and input settings under [hypr](/.config/hypr/) are tailored to
+the current laptop. Review them before applying this archive to different
+hardware.
 
 ## External dependencies
 
@@ -20,15 +22,19 @@ The [envs.conf](/.config/hypr/envs.conf) and [env-hyprland](/.config/uwsm/env-hy
 - toilet
 - lolcat
 - mpvpaper
-- awww
 
-## awww
+Wallpaper switching is handled by Omarchy's native `omarchy theme bg`
+commands.
 
-I use `awww` instead of the default `swaybg` for background switching.
+## Synchronization
 
-To set up the awww daemon, please refer to the instructions in the [awww repository](https://codeberg.org/LGFae/awww) and follow its documentation.  
+Review changes first, then mirror the selected current configuration into this
+repository:
 
-After setup, copy `extra/omarchy-theme-bg-next-aw` to `/home/your-username/.local/share/omarchy/bin` for it to work.
+```bash
+./.config/sync_selective.sh --dry-run
+./.config/sync_selective.sh
+```
 
-> **Note:** Replace `your-username` with your actual username in the path above to avoid errors.
-
+The sync script excludes generated state, backups, archives, legacy files,
+disabled wallpaper archives, and the old Waybar/Elephant configuration.

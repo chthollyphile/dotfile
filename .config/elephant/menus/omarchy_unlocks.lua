@@ -1,1 +1,0 @@
-/home/lia/.local/share/omarchy/default/elephant/omarchy_unlocks.lua

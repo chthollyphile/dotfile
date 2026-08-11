@@ -1,15 +1,15 @@
-/* 自动生成自  的 colors.toml */
+/* Generated from the semantic colors.toml palette. */
 * {
     foreground: #f4e1eb;
     background: #110e11;
-    color0:  #1e181b;
+    color0:  #110e11;
     color1:  #ea4c89;
     color2:  #a1c2af;
     color3:  #e5c07b;
     color4:  #b48ead;
     color5:  #f92b75;
     color6:  #8abeb7;
-    color7:  #dfc8d5;
+    color7:  #f4e1eb;
     color8:  #523b45;
     color9:  #ff7ba5;
     color10: #b7d8c4;

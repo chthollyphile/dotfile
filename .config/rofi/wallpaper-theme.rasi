@@ -1,5 +1,5 @@
 /* 壁纸选择器专用主题 - 紧凑2x2网格 */
-@import "~/.config/omarchy/current/theme/colors.rasi"
+@import "~/.local/state/omarchy/current/theme/colors.rasi"
 
 * {
     layout-bg:      @background;

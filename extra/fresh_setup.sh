@@ -50,7 +50,6 @@ echo -e "${GREEN}[3/5] 安装 AUR 软件包...${NC}"
 PACKAGES_AUR=(
     "waylyrics"
     "mpvpaper"
-    "awww-git"
     "discord_arch_electron"
     "netease-cloud-music-gtk4"
 )

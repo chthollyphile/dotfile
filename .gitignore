@@ -1,3 +1,7 @@
 *.gif
 .config/omarchy/current/
+.config/btop/themes/current.theme
+.config/omarchy/theme-backups*/
+.config/omarchy/boot-backups*/
+.config/hypr/archive/
 .config/omarchy/themes/menhera-noise/backgrounds/*.gif
