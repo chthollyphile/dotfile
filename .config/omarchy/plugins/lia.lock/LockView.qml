@@ -90,8 +90,9 @@ Item {
     inputReveal.restart()
   }
 
-  function playInputFeedback() {
-    inputPulse.restart()
+  function syncPasswordDots(length) {
+    while (passwordDotModel.count < length) passwordDotModel.append({})
+    while (passwordDotModel.count > length) passwordDotModel.remove(passwordDotModel.count - 1)
   }
 
   function forcePasswordFocus() {
@@ -360,9 +361,9 @@ Item {
           }
 
           onTextChanged: {
+            root.syncPasswordDots(text.length)
             if (!root.syncingPasswordText) {
               root.passwordTextEdited(text)
-              root.playInputFeedback()
             }
             if (text.length > 0) root.wakeRequested()
             if (text.length > 0 && root.failureMessage.length > 0) root.clearFailureRequested()
@@ -383,6 +384,10 @@ Item {
           }
         }
 
+        ListModel {
+          id: passwordDotModel
+        }
+
         Row {
           id: passwordDots
           anchors.centerIn: passwordInput
@@ -391,7 +396,7 @@ Item {
           z: 2
 
           Repeater {
-            model: passwordInput.text.length
+            model: passwordDotModel
 
             delegate: Rectangle {
               id: passwordDot
@@ -400,28 +405,17 @@ Item {
               radius: width / 2
               color: Color.foreground
               opacity: 0
-              scale: 0.25
 
               Component.onCompleted: dotAppear.start()
 
-              ParallelAnimation {
+              NumberAnimation {
                 id: dotAppear
-                NumberAnimation {
-                  target: passwordDot
-                  property: "opacity"
-                  from: 0
-                  to: 1
-                  duration: 140
-                  easing.type: Easing.OutCubic
-                }
-                NumberAnimation {
-                  target: passwordDot
-                  property: "scale"
-                  from: 0.25
-                  to: 1
-                  duration: 180
-                  easing.type: Easing.OutBack
-                }
+                target: passwordDot
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 360
+                easing.type: Easing.OutCubic
               }
             }
           }
@@ -475,24 +469,6 @@ Item {
           to: 1
           duration: 320
           easing.type: Easing.OutBack
-        }
-      }
-
-      SequentialAnimation {
-        id: inputPulse
-        NumberAnimation {
-          target: inputField
-          property: "scale"
-          to: 1.018
-          duration: 65
-          easing.type: Easing.OutCubic
-        }
-        NumberAnimation {
-          target: inputField
-          property: "scale"
-          to: 1
-          duration: 130
-          easing.type: Easing.OutCubic
         }
       }
 
