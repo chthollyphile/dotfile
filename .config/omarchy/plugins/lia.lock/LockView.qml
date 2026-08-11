@@ -36,19 +36,22 @@ Item {
   readonly property string placeholderText: "as the Nights Reincarnation..."
   readonly property real fieldWidth: 650 / root.displayScale
   readonly property real fieldHeight: 100 / root.displayScale
+  readonly property real fieldYOffset: 280 / root.displayScale
   readonly property real outlineThickness: 3 / root.displayScale
   // Hyprlock renders its placeholder at one quarter of the field height and
   // passes that value to Pango as points, not pixels.
   readonly property real fieldFontSize: 25 * root.pangoPointScale / root.displayScale
-  readonly property real passwordDotFontSize: 25 * root.pangoPointScale / root.displayScale
-  readonly property real passwordDotLetterSpacing: 5 / root.displayScale
+  readonly property real passwordDotSize: 25 / root.displayScale
+  readonly property real passwordDotSpacing: 5 / root.displayScale
+  readonly property real timeFontSize: 160 * 1.2 * root.pangoPointScale / root.displayScale
   // Space to keep clear on each side of the field for the fingerprint icon
   // (icon width plus a gap) so the centered dots never run under it.
   readonly property real fingerprintReserve: fingerprintConfigured ? Math.round(fingerprintIcon.implicitWidth + 12) : 0
-  // Shrink the dots to fit once the password outgrows the field, so every
-  // keystroke stays visible — otherwise long passwords clip with no feedback.
-  readonly property real passwordDotScale: dotMetrics.advanceWidth > 0
-    ? Math.min(1, (passwordInput.width - 4) / dotMetrics.advanceWidth)
+  // Shrink the dots to fit once the password outgrows the field, matching
+  // Hyprlock's centered dots without allowing them under the field edges.
+  readonly property real passwordDotScale: passwordInput.text.length > 0
+    ? Math.min(1, (passwordInput.width + root.passwordDotSpacing) /
+        (passwordInput.text.length * (root.passwordDotSize + root.passwordDotSpacing)))
     : 1
   readonly property bool showPasswordCursor: inputEnabled && !authenticatingPassword && failureMessage.length === 0
   readonly property bool errorState: failureMessage.length > 0
@@ -83,6 +86,14 @@ Item {
     if (!monitorScaleProc.running) monitorScaleProc.running = true
   }
 
+  function revealInputField() {
+    inputReveal.restart()
+  }
+
+  function playInputFeedback() {
+    inputPulse.restart()
+  }
+
   function forcePasswordFocus() {
     passwordInput.forceActiveFocus()
   }
@@ -106,14 +117,22 @@ Item {
     if (loadBackground) {
       updateClock()
       refreshDisplayScale()
+      Qt.callLater(revealInputField)
       Qt.callLater(refreshQuote)
+    } else {
+      inputFieldContainer.opacity = 0
+      inputFieldContainer.scale = 0.94
     }
+  }
+  onFailureMessageChanged: {
+    if (failureMessage.length > 0) inputFailureShake.restart()
   }
   Component.onCompleted: {
     syncPasswordText()
     updateClock()
     refreshDisplayScale()
     if (loadBackground) refreshQuote()
+    if (loadBackground) Qt.callLater(revealInputField)
     if (inputEnabled) Qt.callLater(forcePasswordFocus)
   }
 
@@ -166,16 +185,6 @@ Item {
     }
   }
 
-  // Measures the masked password at full size; passwordDotScale compares this
-  // against the field width to decide how far the dots must shrink to fit.
-  TextMetrics {
-    id: dotMetrics
-    font.family: "CaskaydiaMono Nerd Font"
-    font.pixelSize: root.passwordDotFontSize
-    font.letterSpacing: root.passwordDotLetterSpacing
-    text: "●".repeat(passwordInput.text.length)
-  }
-
   Rectangle {
     anchors.fill: parent
     color: Color.background
@@ -225,55 +234,67 @@ Item {
 
     Text {
       id: hoursShadow
+      width: parent.width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
       anchors.horizontalCenterOffset: 1 / root.displayScale
-      anchors.verticalCenterOffset: (-520 + 1) / root.displayScale
-      text: "<b><big> " + root.hoursText + " </big></b>"
-      textFormat: Text.RichText
+      anchors.verticalCenterOffset: (-400 + 1) / root.displayScale
+      text: root.hoursText
+      textFormat: Text.PlainText
       color: Qt.rgba(94 / 255, 94 / 255, 94 / 255, 0.5)
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
+      font.pixelSize: root.timeFontSize
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
       z: 2
     }
 
     Text {
       id: hoursLabel
+      width: parent.width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: -520 / root.displayScale
-      text: "<b><big> " + root.hoursText + " </big></b>"
-      textFormat: Text.RichText
+      anchors.verticalCenterOffset: -400 / root.displayScale
+      text: root.hoursText
+      textFormat: Text.PlainText
       color: "white"
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
+      font.pixelSize: root.timeFontSize
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
       z: 3
     }
 
     Text {
       id: minutesShadow
+      width: parent.width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
       anchors.horizontalCenterOffset: 1 / root.displayScale
-      anchors.verticalCenterOffset: (-320 + 1) / root.displayScale
-      text: "<b><big> " + root.minutesText + " </big></b>"
-      textFormat: Text.RichText
+      anchors.verticalCenterOffset: (-200 + 1) / root.displayScale
+      text: root.minutesText
+      textFormat: Text.PlainText
       color: Qt.rgba(94 / 255, 94 / 255, 94 / 255, 0.5)
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
+      font.pixelSize: root.timeFontSize
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
       z: 2
     }
 
     Text {
       id: minutesLabel
+      width: parent.width
       anchors.horizontalCenter: parent.horizontalCenter
       anchors.verticalCenter: parent.verticalCenter
-      anchors.verticalCenterOffset: -320 / root.displayScale
-      text: "<b><big> " + root.minutesText + " </big></b>"
-      textFormat: Text.RichText
+      anchors.verticalCenterOffset: -200 / root.displayScale
+      text: root.minutesText
+      textFormat: Text.PlainText
       color: "white"
       font.family: "JetBrainsMono Nerd Font Propo"
-      font.pixelSize: 160 * root.pangoPointScale / root.displayScale
+      font.pixelSize: root.timeFontSize
+      font.bold: true
+      horizontalAlignment: Text.AlignHCenter
       z: 3
     }
 
@@ -284,102 +305,204 @@ Item {
       onPositionChanged: root.wakeRequested()
     }
 
-    BorderSurface {
-      id: inputField
+    Item {
+      id: inputFieldContainer
       width: root.fieldWidth
       height: root.fieldHeight
       anchors.horizontalCenter: parent.horizontalCenter
-      // Hyprlock position 0,-350 is below center; Qt's Y axis is inverted.
-      y: (parent.height - height) / 2 + 350 / root.displayScale
-      color: Qt.rgba(255 / 255, 255 / 255, 255 / 255, 0.1)
-      borderSpec: root.inputBorderSpec
-      radius: 22 / root.displayScale
-      clip: true
+      // Keep the input field in the lower-half position selected in preview.
+      y: (parent.height - height) / 2 + root.fieldYOffset
+      opacity: 0
+      scale: 0.94
+      transformOrigin: Item.Center
       z: 4
 
-      TextInput {
-        id: passwordInput
+      BorderSurface {
+        id: inputField
         anchors.fill: parent
-        anchors.topMargin: inputField.borderTop
-        // Reserve the fingerprint icon's width on both sides so the centered
-        // dots stay symmetric and never slide under the icon as they grow.
-        anchors.rightMargin: inputField.borderRight + 18 / root.displayScale + root.fingerprintReserve
-        anchors.bottomMargin: inputField.borderBottom
-        anchors.leftMargin: inputField.borderLeft + 18 / root.displayScale + root.fingerprintReserve
-        verticalAlignment: TextInput.AlignVCenter
-        horizontalAlignment: TextInput.AlignHCenter
-        activeFocusOnPress: true
+        color: Qt.rgba(255 / 255, 255 / 255, 255 / 255, 0.1)
+        borderSpec: root.inputBorderSpec
+        radius: 22 / root.displayScale
         clip: true
-        enabled: root.inputEnabled && !root.authenticatingPassword
-        readOnly: root.authenticatingPassword
-        echoMode: TextInput.Password
-        passwordCharacter: "\u25CF"
-        passwordMaskDelay: 0
-        color: Color.foreground
-        selectionColor: Color.accent
-        selectedTextColor: Color.foreground
-        font.family: "CaskaydiaMono Nerd Font"
-        font.pixelSize: text.length > 0 ? Math.max(1, Math.floor(root.passwordDotFontSize * root.passwordDotScale)) : root.fieldFontSize
-        font.letterSpacing: text.length > 0 ? root.passwordDotLetterSpacing * root.passwordDotScale : 0
-        cursorVisible: activeFocus && root.showPasswordCursor && text.length > 0
-        cursorDelegate: Rectangle {
-          width: 2
-          color: Color.foreground
-          visible: passwordInput.cursorVisible
+        transformOrigin: Item.Center
+        transform: Translate {
+          id: inputShake
+          x: 0
         }
 
-        onTextChanged: {
-          if (!root.syncingPasswordText) root.passwordTextEdited(text)
-          if (text.length > 0) {
-            root.wakeRequested()
+        TextInput {
+          id: passwordInput
+          anchors.fill: parent
+          anchors.topMargin: inputField.borderTop
+          // Reserve the fingerprint icon's width on both sides so the centered
+          // dots stay symmetric and never slide under it as they grow.
+          anchors.rightMargin: inputField.borderRight + 18 / root.displayScale + root.fingerprintReserve
+          anchors.bottomMargin: inputField.borderBottom
+          anchors.leftMargin: inputField.borderLeft + 18 / root.displayScale + root.fingerprintReserve
+          verticalAlignment: TextInput.AlignVCenter
+          horizontalAlignment: TextInput.AlignHCenter
+          activeFocusOnPress: true
+          clip: true
+          enabled: root.inputEnabled && !root.authenticatingPassword
+          readOnly: root.authenticatingPassword
+          echoMode: TextInput.Password
+          passwordCharacter: "\u25CF"
+          passwordMaskDelay: 0
+          color: "transparent"
+          selectionColor: "transparent"
+          selectedTextColor: "transparent"
+          font.family: "CaskaydiaMono Nerd Font"
+          font.pixelSize: root.fieldFontSize
+          cursorVisible: false
+          cursorDelegate: Item {
+            width: 0
+            visible: false
           }
-          if (text.length > 0 && root.failureMessage.length > 0) root.clearFailureRequested()
-        }
 
-        onAccepted: {
-          var submitted = root.passwordText
-          root.passwordTextEdited("")
-          if (submitted.length > 0) root.submitPassword(submitted)
-        }
+          onTextChanged: {
+            if (!root.syncingPasswordText) {
+              root.passwordTextEdited(text)
+              root.playInputFeedback()
+            }
+            if (text.length > 0) root.wakeRequested()
+            if (text.length > 0 && root.failureMessage.length > 0) root.clearFailureRequested()
+          }
 
-        Keys.onPressed: function(event) {
-          root.wakeRequested()
-          if (event.key === Qt.Key_Escape || (event.modifiers & Qt.ControlModifier && event.key === Qt.Key_U)) {
+          onAccepted: {
+            var submitted = root.passwordText
             root.passwordTextEdited("")
-            event.accepted = true
+            if (submitted.length > 0) root.submitPassword(submitted)
           }
+
+          Keys.onPressed: function(event) {
+            root.wakeRequested()
+            if (event.key === Qt.Key_Escape || (event.modifiers & Qt.ControlModifier && event.key === Qt.Key_U)) {
+              root.passwordTextEdited("")
+              event.accepted = true
+            }
+          }
+        }
+
+        Row {
+          id: passwordDots
+          anchors.centerIn: passwordInput
+          spacing: root.passwordDotSpacing * root.passwordDotScale
+          visible: passwordInput.text.length > 0
+          z: 2
+
+          Repeater {
+            model: passwordInput.text.length
+
+            delegate: Rectangle {
+              id: passwordDot
+              width: root.passwordDotSize * root.passwordDotScale
+              height: width
+              radius: width / 2
+              color: Color.foreground
+              opacity: 0
+              scale: 0.25
+
+              Component.onCompleted: dotAppear.start()
+
+              ParallelAnimation {
+                id: dotAppear
+                NumberAnimation {
+                  target: passwordDot
+                  property: "opacity"
+                  from: 0
+                  to: 1
+                  duration: 140
+                  easing.type: Easing.OutCubic
+                }
+                NumberAnimation {
+                  target: passwordDot
+                  property: "scale"
+                  from: 0.25
+                  to: 1
+                  duration: 180
+                  easing.type: Easing.OutBack
+                }
+              }
+            }
+          }
+        }
+
+        Text {
+          anchors.fill: passwordInput
+          text: root.authenticatingPassword ? "Checking…" : (root.failureMessage.length > 0 ? root.failureMessage : root.placeholderText)
+          visible: passwordInput.text.length === 0
+          color: Color.foreground
+          font.family: "CaskaydiaMono Nerd Font"
+          font.pixelSize: root.fieldFontSize
+          font.italic: !root.authenticatingPassword && root.failureMessage.length > 0
+          horizontalAlignment: Text.AlignHCenter
+          verticalAlignment: Text.AlignVCenter
+          elide: Text.ElideRight
+        }
+
+        // Fingerprint hint pinned inside the field's right edge when a sensor
+        // is enrolled, matching Hyprlock's indicator placement.
+        Text {
+          id: fingerprintIcon
+          objectName: "fingerprintIndicator"
+          anchors.right: parent.right
+          anchors.rightMargin: inputField.borderRight + 18 / root.displayScale
+          anchors.verticalCenter: parent.verticalCenter
+          visible: root.fingerprintConfigured
+          text: "󰈷"
+          color: Color.foreground
+          font.family: Style.font.family
+          font.pixelSize: Math.round(root.fieldFontSize * 1.1)
+          horizontalAlignment: Text.AlignHCenter
+          verticalAlignment: Text.AlignVCenter
         }
       }
 
-      Text {
-        anchors.fill: passwordInput
-        text: root.authenticatingPassword ? "Checking…" : (root.failureMessage.length > 0 ? root.failureMessage : root.placeholderText)
-        visible: passwordInput.text.length === 0
-        color: Color.foreground
-        font.family: "CaskaydiaMono Nerd Font"
-        font.pixelSize: root.fieldFontSize
-        font.italic: !root.authenticatingPassword && root.failureMessage.length > 0
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        elide: Text.ElideRight
+      ParallelAnimation {
+        id: inputReveal
+        NumberAnimation {
+          target: inputFieldContainer
+          property: "opacity"
+          from: 0
+          to: 1
+          duration: 240
+          easing.type: Easing.OutCubic
+        }
+        NumberAnimation {
+          target: inputFieldContainer
+          property: "scale"
+          from: 0.94
+          to: 1
+          duration: 320
+          easing.type: Easing.OutBack
+        }
       }
 
-      // Fingerprint hint pinned inside the field's right edge when a sensor is
-      // enrolled, so the user knows they can touch to unlock instead of typing.
-      // Matches hyprlock, which draws its fingerprint icon in the same spot.
-      Text {
-        id: fingerprintIcon
-        objectName: "fingerprintIndicator"
-        anchors.right: parent.right
-        anchors.rightMargin: inputField.borderRight + 18 / root.displayScale
-        anchors.verticalCenter: parent.verticalCenter
-        visible: root.fingerprintConfigured
-        text: "󰈷"
-        color: Color.foreground
-        font.family: Style.font.family
-        font.pixelSize: Math.round(root.fieldFontSize * 1.1)
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+      SequentialAnimation {
+        id: inputPulse
+        NumberAnimation {
+          target: inputField
+          property: "scale"
+          to: 1.018
+          duration: 65
+          easing.type: Easing.OutCubic
+        }
+        NumberAnimation {
+          target: inputField
+          property: "scale"
+          to: 1
+          duration: 130
+          easing.type: Easing.OutCubic
+        }
+      }
+
+      SequentialAnimation {
+        id: inputFailureShake
+        NumberAnimation { target: inputShake; property: "x"; to: -12 / root.displayScale; duration: 45 }
+        NumberAnimation { target: inputShake; property: "x"; to: 12 / root.displayScale; duration: 70 }
+        NumberAnimation { target: inputShake; property: "x"; to: -8 / root.displayScale; duration: 60 }
+        NumberAnimation { target: inputShake; property: "x"; to: 8 / root.displayScale; duration: 60 }
+        NumberAnimation { target: inputShake; property: "x"; to: 0; duration: 70; easing.type: Easing.OutCubic }
       }
     }
   }
