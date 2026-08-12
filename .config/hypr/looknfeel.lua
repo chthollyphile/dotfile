@@ -30,6 +30,9 @@ hl.config({
 -- Keep the current Omarchy fade curve and timing.
 hl.animation({ leaf = "fadeSwitch", enabled = true, speed = 3.03, bezier = "quick" })
 
+-- Show Fcitx5/Wayland input-method popups immediately.
+hl.animation({ leaf = "fadePopupsIn", enabled = false })
+
 -- Terminal and cava opacity rules.
 o.window("Alacritty|com.mitchellh.ghostty", {
   opacity = "0.85 override 0.7 override 0.95 override",
