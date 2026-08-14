@@ -19,7 +19,7 @@
           "id": "omarchy.weather"
         },
         {
-          "id": "omarchy.media"
+          "id": "lia.folia-lyrics"
         },
         {
           "id": "omarchy.system-update"
@@ -38,7 +38,18 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "omarchy.agents"
+          "id": "omarchy.agents",
+          "providers": {
+            "claude": {
+              "enabled": false
+            },
+            "codex": {
+              "enabled": true
+            },
+            "fireworks": {
+              "enabled": false
+            }
+          }
         },
         {
           "id": "omarchy.bluetooth"

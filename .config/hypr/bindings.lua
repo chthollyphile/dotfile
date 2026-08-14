@@ -44,6 +44,11 @@ hl.unbind("SUPER + SLASH")
 hl.unbind("SUPER + mouse:273")
 replace("SUPER + ALT + mouse:272", "Resize window", hl.dsp.window.resize(), { mouse = true })
 replace("SUPER + ALT + T", "Fit to screen", hl.dsp.layout("fit active"))
+replace(
+  "SUPER + ALT + Y",
+  "Toggle scrolling new-window width (80%/100%)",
+  "/home/lia/.config/hypr/toggle-scrolling-width.sh"
+)
 
 -- ScrollOverview (SUPER+Q; SUPER+G remains window grouping).
 hl.unbind("SUPER + ALT + O")

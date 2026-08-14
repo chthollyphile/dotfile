@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "id": "lia.folia-lyrics",
+  "name": "Folia Lyrics",
+  "version": "1.5.0",
+  "author": "Lia",
+  "description": "逐词同步显示 Folia 当前歌词",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "LyricWidget.qml"
+  },
+  "barWidget": {
+    "displayName": "Folia Lyrics",
+    "description": "通过 Folia lyric API 和 MPRIS 播放进度显示逐词歌词",
+    "category": "Media",
+    "allowMultiple": false,
+    "defaultSection": "center",
+    "defaults": {
+      "displayMode": "auto",
+      "lyricTextPriority": "original",
+      "apiUrl": "http://127.0.0.1:32109/v1/lyric",
+      "maxWidth": 280,
+      "pollInterval": 750,
+      "glow": "on"
+    },
+    "schema": [
+      {
+        "key": "displayMode",
+        "type": "enum",
+        "label": "显示模式",
+        "options": ["auto", "mpris"],
+        "defaultValue": "auto",
+        "description": "auto 优先显示 Folia 歌词并在不可用时回退到 MPRIS；mpris 完全禁用 Folia 请求。"
+      },
+      {
+        "key": "lyricTextPriority",
+        "type": "enum",
+        "label": "歌词文本优先级",
+        "options": ["original", "translation"],
+        "defaultValue": "original",
+        "description": "original 显示原文；translation 优先显示翻译，缺少翻译时回退到原文。"
+      },
+      {
+        "key": "apiUrl",
+        "type": "string",
+        "label": "歌词接口地址",
+        "defaultValue": "http://127.0.0.1:32109/v1/lyric",
+        "description": "可填写任意兼容 Folia v1 lyric API 响应格式的接口地址。"
+      },
+      {
+        "key": "maxWidth",
+        "type": "integer",
+        "label": "最大显示宽度",
+        "min": 120,
+        "max": 640,
+        "step": 10,
+        "defaultValue": 280
+      },
+      {
+        "key": "pollInterval",
+        "type": "integer",
+        "label": "歌词轮询间隔（毫秒）",
+        "min": 500,
+        "max": 5000,
+        "step": 50,
+        "defaultValue": 750
+      },
+      {
+        "key": "glow",
+        "type": "enum",
+        "label": "当前词光晕",
+        "options": ["on", "off"],
+        "defaultValue": "on",
+        "description": "使用纯文字叠层为当前词增加柔光，不启用离屏模糊。"
+      }
+    ]
+  }
+}
