@@ -73,3 +73,11 @@ hl.plugin.scrolloverview.gesture({
 	direction = "vertical",
 	scale = 1.5,
 })
+
+-- ALT+Tab: visual window switcher backed by ScrollOverview.
+local altTab = require("scripts.alttab")
+-- Remove Omarchy's default ALT+TAB actions (focus next + bring to top).
+hl.unbind("ALT + Tab")
+hl.bind("ALT + Tab", altTab.next, { submap_universal = true })
+hl.bind("ALT + Alt_L", altTab.close, { release = true, transparent = true })
+hl.bind("ALT + Alt_R", altTab.close, { release = true, transparent = true })

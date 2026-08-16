@@ -38,11 +38,11 @@
           "id": "omarchy.tray"
         },
         {
-          "id": "omarchy.agents",
-          "providers": {
-            "claude": {
-              "enabled": false
-            },
+            "id": "omarchy.agents",
+            "providers": {
+              "claude": {
+                "enabled": true
+              },
             "codex": {
               "enabled": true
             },
