@@ -145,6 +145,18 @@ function wordState(word, position) {
     return "future"
 }
 
+// MPRIS reports track position and length in seconds. The detail popup shows
+// them as mm:ss, so an hour-long track deliberately reads as "72:14" rather
+// than growing an hours field that would misalign the shorter common case.
+function formatTime(seconds) {
+    var total = Math.floor(numberOr(seconds, 0))
+    if (!(total >= 0)) total = 0
+
+    var minutes = Math.floor(total / 60)
+    var rest = total % 60
+    return minutes + ":" + String(rest).padStart(2, "0")
+}
+
 function signature(response) {
     return response === null ? "null" : JSON.stringify(response)
 }
@@ -156,6 +168,7 @@ if (typeof module !== "undefined" && module.exports) {
         normalizeResponse: normalizeResponse,
         findActiveLine: findActiveLine,
         wordState: wordState,
+        formatTime: formatTime,
         signature: signature
     }
 }

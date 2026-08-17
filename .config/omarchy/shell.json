@@ -19,10 +19,10 @@
           "id": "omarchy.weather"
         },
         {
-          "id": "lia.folia-lyrics"
+          "id": "omarchy.system-update"
         },
         {
-          "id": "omarchy.system-update"
+          "id": "lia.folia-lyrics"
         }
       ],
       "left": [
@@ -38,11 +38,11 @@
           "id": "omarchy.tray"
         },
         {
-            "id": "omarchy.agents",
-            "providers": {
-              "claude": {
-                "enabled": true
-              },
+          "id": "omarchy.agents",
+          "providers": {
+            "claude": {
+              "enabled": true
+            },
             "codex": {
               "enabled": true
             },

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "lia.folia-lyrics",
   "name": "Folia Lyrics",
-  "version": "1.5.0",
+  "version": "1.7.0",
   "author": "Lia",
   "description": "逐词同步显示 Folia 当前歌词",
   "kinds": [
@@ -21,9 +21,13 @@
       "displayMode": "auto",
       "lyricTextPriority": "original",
       "apiUrl": "http://127.0.0.1:32109/v1/lyric",
+      "playerMatch": "folia",
       "maxWidth": 280,
       "pollInterval": 750,
-      "glow": "on"
+      "glow": "on",
+      "detailPopup": "on",
+      "popupWidth": 320,
+      "popupHideDelay": 250
     },
     "schema": [
       {
@@ -50,6 +54,13 @@
         "description": "可填写任意兼容 Folia v1 lyric API 响应格式的接口地址。"
       },
       {
+        "key": "playerMatch",
+        "type": "string",
+        "label": "歌词播放器匹配",
+        "defaultValue": "folia",
+        "description": "以英文逗号分隔的匹配串，匹配 MPRIS 播放器的 identity、desktop entry 或总线名。歌词只跟随匹配到的播放器，其他播放器只显示媒体标题。留空则接受任意播放器。"
+      },
+      {
         "key": "maxWidth",
         "type": "integer",
         "label": "最大显示宽度",
@@ -74,6 +85,33 @@
         "options": ["on", "off"],
         "defaultValue": "on",
         "description": "使用纯文字叠层为当前词增加柔光，不启用离屏模糊。"
+      },
+      {
+        "key": "detailPopup",
+        "type": "enum",
+        "label": "悬浮详情弹窗",
+        "options": ["on", "off"],
+        "defaultValue": "on",
+        "description": "on 在悬浮时展开详情卡片，显示封面、进度与原文翻译对照；off 回退为纯文本 tooltip。"
+      },
+      {
+        "key": "popupWidth",
+        "type": "integer",
+        "label": "详情弹窗宽度",
+        "min": 240,
+        "max": 520,
+        "step": 10,
+        "defaultValue": 320
+      },
+      {
+        "key": "popupHideDelay",
+        "type": "integer",
+        "label": "详情弹窗收起延迟（毫秒）",
+        "min": 0,
+        "max": 2000,
+        "step": 50,
+        "defaultValue": 250,
+        "description": "指针离开组件后收起卡片的延迟，用于让指针跨过状态栏与卡片之间的空隙。"
       }
     ]
   }

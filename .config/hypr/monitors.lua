@@ -7,6 +7,9 @@ local omarchy_monitor_scale = 1.6
 hl.env("GDK_SCALE", tostring(omarchy_gdk_scale))
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = omarchy_monitor_scale })
 
+-- Dell U2725QE: prefer the tested 4K 120 Hz mode on the external display.
+hl.monitor({ output = "DP-3", mode = "3840x2160@120", position = "1600x0", scale = omarchy_monitor_scale })
+
 -- Configure a specific monitor.
 -- hl.monitor({ output = "DP-2", mode = "2560x1440@144", position = "0x0", scale = 1 })
 
