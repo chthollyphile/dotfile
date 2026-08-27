@@ -11,6 +11,23 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
+UWSM_ENV_FILE="$HOME/.config/uwsm/env-hyprland"
+
+set_uwsm_drm_order() {
+    local drm_order="$1"
+    local line="export AQ_DRM_DEVICES=\"$drm_order\""
+
+    mkdir -p "$(dirname "$UWSM_ENV_FILE")"
+
+    if [[ -f "$UWSM_ENV_FILE" ]] && grep -qE '^[[:space:]]*export[[:space:]]+AQ_DRM_DEVICES=' "$UWSM_ENV_FILE"; then
+        sed -i "s|^[[:space:]]*export[[:space:]]\+AQ_DRM_DEVICES=.*$|$line|" "$UWSM_ENV_FILE"
+    else
+        printf '%s\n' "$line" >> "$UWSM_ENV_FILE"
+    fi
+
+    echo -e "${GREEN}已更新 UWSM DRM 顺序: ${drm_order}${NC}"
+}
+
 # 检查是否安装了 envycontrol
 if ! command -v envycontrol &> /dev/null; then
     echo -e "${RED}错误: 未找到 envycontrol 命令。请先安装它。${NC}"
@@ -48,6 +65,9 @@ case $choice in
         
         # 1. 切换显卡模式
         sudo envycontrol -s integrated --verbose
+
+        # 1.1 Integrated 模式只向 Hyprland 暴露 Intel GPU
+        set_uwsm_drm_order "/dev/dri/intel-igpu"
         
         # 2. 处理服务：立即停止并禁用，防止当前或重启后卡死
         echo -e "${YELLOW}正在禁用 NVIDIA 挂起服务...${NC}"
@@ -62,6 +82,9 @@ case $choice in
         
         # 1. 切换显卡模式
         sudo envycontrol -s hybrid --verbose
+
+        # 1.1 Hybrid 模式优先使用 NVIDIA，并保留 Intel 回退
+        set_uwsm_drm_order "/dev/dri/nvidia-dgpu:/dev/dri/intel-igpu"
         
         # 2. 处理服务：只 Enable，不 Now。因为当前显卡可能还没电，强行 Start 可能会报错。
         # 重启后这些服务会自动生效。

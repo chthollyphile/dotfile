@@ -31,17 +31,17 @@ require("default.hypr.toggles")
 -- Input method environment. Keep this in the active Lua entrypoint; the
 -- legacy ~/.config/hypr/envs.conf is no longer loaded after the Quattro
 -- migration.
-hl.env("GTK_IM_MODULE", "fcitx")
+-- GTK_IM_MODULE intentionally unset: the Wayland text-input frontend handles
+-- GTK apps natively, and setting it forces the slower/buggier GTK im-module path.
+-- hl.env("GTK_IM_MODULE", "fcitx")
 hl.env("QT_IM_MODULE", "fcitx")
 hl.env("XMODIFIERS", "@im=fcitx")
 hl.env("INPUT_METHOD", "fcitx")
 hl.env("SDL_IM_MODULE", "fcitx")
 
 -- Other personal environment overrides from the legacy envs.conf.
-hl.env("VK_ICD_FILENAMES", "/usr/share/vulkan/icd.d/intel_icd.x86_64.json:/usr/share/vulkan/icd.d/nvidia_icd.json")
 hl.env("LIBVA_DRIVER_NAME", "iHD")
 hl.env("OMARCHY_SCREENSHOT_DIR", (os.getenv("HOME") or "") .. "/Pictures/screenshots")
-hl.env("AQ_DRM_DEVICES", "/dev/dri/intel-igpu:/dev/dri/nvidia-dgpu")
 
 -- ScrollOverview: a niri-style scrolling workspace overview.
 hl.config({
