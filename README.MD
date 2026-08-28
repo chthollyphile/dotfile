@@ -16,6 +16,7 @@ The monitor and input settings under [hypr](/.config/hypr/) are tailored to
 the current laptop. Review them before applying this archive to different
 hardware.
 
+
 ## External dependencies
 
 - cava
